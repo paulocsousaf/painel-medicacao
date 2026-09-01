@@ -5,8 +5,8 @@
  * evento -> ação -> estado -> render -> tela. Sempre nesse sentido.
  * ============================================================
  */
-import {} from "./api.js";
-import { subscribe, getState } from "./state.js";
+import {listMedications} from "./api.js";
+import { subscribe, getState, setMedications, setError} from "./state.js";
 import { renderCounter, renderLoading, renderError } from "./render.js";
 
 const medicationListElement = document.querySelector("#medication-list");
@@ -56,7 +56,16 @@ subscribe(renderApp);
 //   }
 //   start();
 // ============================================================
-
+async function start() {
+  renderApp(getState())
+  try{
+    const medications = await listMedications()
+    setMedications(medications)
+  }catch(error){
+    setError(error.message)
+  }
+}
+start()
 
 // ============================================================
 // PASSO 3 — clique em "Cadastrar prescrição"
