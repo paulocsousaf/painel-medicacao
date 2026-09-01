@@ -16,6 +16,14 @@ const MEDICATIONS_URL = "/api/medications";
 //   return response.json();
 // ============================================================
 
+export async function listMedications(){
+  const response = await fetch(MEDICATIONS_URL)
+
+  if(!response.ok){
+    throw new Error("Error ao buscar medicamentos")
+  }
+  return response.json()
+}
 
 // ============================================================
 // PASSO 3 — implemente createMedication(medication)
