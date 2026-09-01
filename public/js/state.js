@@ -45,7 +45,11 @@ export function getSelectedMedication() {
 // PASSO 2 — implemente setMedications(medications)
 //   guarde a lista, encerre o loading, limpe o erro, notify()
 // ============================================================
-
+export function setMedications(medications){
+  state.medications = medications;
+  state.isLoading = false;
+  notify()
+}
 
 /** Registra uma falha de carregamento da lista. */
 export function setError(message) {
