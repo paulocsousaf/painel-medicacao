@@ -46,7 +46,10 @@ function toMedicationJson(row: medicationRow){
 //   db.prepare("SELECT ... FROM medication_orders").all()
 //   Nao esqueca de traduzir snake_case -> camelCase antes de responder.
 // ============================================================
-
+app.get('/api/medications', (req, res) => {
+  const rows = db.prepare('SELECT * FROM medication_orders').all() as medicationRow[]
+  res.send(rows.map(toMedicationJson))
+})
 // ============================================================
 // PASSO 3 — POST /api/medications
 //   valide patientName, medicationName, dosage, route, scheduledAt
