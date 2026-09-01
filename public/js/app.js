@@ -7,7 +7,7 @@
  */
 import {listMedications} from "./api.js";
 import { subscribe, getState, setMedications, setError} from "./state.js";
-import { renderCounter, renderLoading, renderError } from "./render.js";
+import { renderCounter, renderLoading, renderError, renderMedicationList} from "./render.js";
 
 const medicationListElement = document.querySelector("#medication-list");
 const resultCounterElement = document.querySelector("#result-counter");
@@ -35,9 +35,8 @@ function renderApp(state) {
     return;
   }
 
-  // PASSO 2: chame renderMedicationList aqui
-  // PASSO 4: chame renderDetail(state, detailPanelElement) aqui
-
+  // PASSO 4: chame renderDeta il(state, detailPanelElement) aqui
+  renderMedicationList(state.medications, medicationListElement)
   renderCounter(state.medications.length, resultCounterElement);
 }
 
