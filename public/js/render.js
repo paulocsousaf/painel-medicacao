@@ -47,6 +47,13 @@ function emptyStateTemplate() {
 //   vazio -> emptyStateTemplate(); senão -> map + join('') com medicationCardTemplate
 // ============================================================
 
+export function renderMedicationList(medication, container){
+  if(medication.length === 0){
+    return emptyStateTemplate()
+  }
+  return container.innerHTML = medication.map(medicationCardTemplate).join('')
+}
+
 
 export function renderCounter(count, container) {
   container.textContent = `${count} prescrição(ões) no painel`;
