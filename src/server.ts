@@ -19,6 +19,28 @@ app.get("/api/health", (_request, response) => {
   response.json({ status: "ok" });
 });
 
+type medicationRow = {
+  id: number,
+  patient_name: string
+  medication_name: string,
+  dosage: string,
+  route: string,
+  scheduled_at: string,
+  notes: string
+}
+
+function toMedicationJson(row: medicationRow){
+  return {
+   id: row.id,
+   patientName: row.patient_name,
+   medicationName: row.medication_name,
+   dosage: row.dosage,
+   route: row.dosage,
+   scheduledAt: row.scheduled_at,
+   notes: row.notes
+  }
+}
+
 // ============================================================
 // PASSO 1 — GET /api/medications
 //   db.prepare("SELECT ... FROM medication_orders").all()
