@@ -55,6 +55,31 @@ app.get('/api/medications', (req, res) => {
 //   valide patientName, medicationName, dosage, route, scheduledAt
 //   INSERT parametrizado -> responda 201 com o registro criado
 // ============================================================
+const ISO_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+function isBlank(value: string): boolean{
+  return value.trim() === ""
+}
+
+function validateInput(body: any){
+
+  if(isBlank(body?.patientName)){
+    return "O campo 'Paciente' não pode ser vazio"
+  }
+  if(isBlank(body?.medicationName)){
+    return "O campo 'Medicamento' não pode ser vazio"
+  }
+  if(isBlank(body?.dosage)){
+    return "O campo 'Dosagem' não pode ser vazio"
+  }
+  if(isBlank(body?.route)){
+    return "O campo 'Via' não pode ser vazio"
+  }
+  if(isBlank(body?.scheduledAt) || !ISO_DATE_TIME.test(body?.scheduledAt)){
+    return "O horário deve seguir o formato: AAAA-MM-DDTHH:MM"
+  }
+  return null
+}
 
 // ============================================================
 // PASSO 4 — GET /api/medications/:id
