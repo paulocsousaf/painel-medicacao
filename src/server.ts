@@ -80,7 +80,26 @@ function validateInput(body: any){
   }
   return null
 }
+app.post('/api/medications/', (req, res) =>{
+  const medication = req.body
+  const problem = validateInput(medication)
+  if(problem){
+    res.status(400).json({error: problem});
+    return;
+  }
+  // desestruturar objeto vindo do body da requisição
+  const {patientName, medicationName, dosage, route, scheduledAt, notes} = medication
+  
+  // adicionar ao banco
+  const result = db.prepare(`INSERT INTO medication_orders (patient_name, medication_name, dosage, route, scheduled_at, notes) VALUES (?, ?, ?, ?, ?, ?)`)
+    .run(patientName.trim(), medicationName.trim(), dosage.trim(), route.trim(), scheduledAt, isBlank(notes ?? "")? null: notes.trim())
+  
+  // resgatar registro criado
+  const created = db.prepare(`SELECT * FROM medication_orders WHERE id = ?`).get(result.lastInsertRowid)
 
+  // devolver a resposta com o medicamento criado
+  res.status(201).json(toMedicationJson(created as medicationRow))
+})
 // ============================================================
 // PASSO 4 — GET /api/medications/:id
 //   db.prepare("SELECT ... WHERE id = ?").get(id)
