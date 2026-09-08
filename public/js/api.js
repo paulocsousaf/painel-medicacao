@@ -30,6 +30,23 @@ export async function listMedications(){
 //   method: "POST", headers Content-Type, body: JSON.stringify(medication)
 //   se !response.ok, leia o corpo e jogue o erro com a mensagem do servidor
 // ============================================================
+export async function createMedication(medication){
+
+    const response = await fetch("/api/medications", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(medication)
+    })
+    
+    if(!response.ok){
+      const problem = await response.json()
+      throw new Error(problem.error)
+    }
+    return await response.json()
+  }
+  
 
 
 // ============================================================
