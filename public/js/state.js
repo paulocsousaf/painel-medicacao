@@ -63,7 +63,10 @@ export function setError(message) {
 //   acrescenta ao array de medications (imutável: [...state.medications, medication])
 //   notify()
 // ============================================================
-
+export function addMedication(medication){
+  state.medications.push(medication)
+  notify()
+}
 
 // ============================================================
 // PASSO 4 — implemente selectMedication(id) e clearSelection()
