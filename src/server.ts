@@ -105,7 +105,22 @@ app.post('/api/medications/', (req, res) =>{
 //   db.prepare("SELECT ... WHERE id = ?").get(id)
 //   undefined -> 404
 // ============================================================
+app.get('/api/medications/:id', (req, res) =>{
 
+try{
+  const id = req.params.id
+  const medicationOrder = db.prepare(`SELECT * FROM medication_orders WHERE id = ?`).get(id)
+
+  if(!medicationOrder){
+    return res.status(404).json({error: "Receita não encotrada"})
+  }
+  return res.status(200).json(toMedicationJson(medicationOrder as medicationRow))
+  
+}catch(error){
+  console.error(error)
+  return res.status(500).json({error: "Error interno do Servidor"})
+}
+})
 // ============================================================
 // PASSO 5 — DELETE /api/medications/:id
 //   db.prepare("DELETE FROM medication_orders WHERE id = ?").run(id)
