@@ -54,7 +54,17 @@ export async function createMedication(medication){
 //   fetch(`${MEDICATIONS_URL}/${id}`)
 //   response.status === 404 -> throw new Error("Prescrição não encontrada.")
 // ============================================================
+export async function getMedication(id){
+  
+    const response = await fetch(`/api/medications/${id}`)
+    
+    if(!response.ok){
+      const problem = await response.json().catch(() => null)
+      throw new Error(problem?.error ?? `Erro ${response.status}: Falha ao buscar medicamento`)
+    }
+    return await response.json()
 
+}
 
 // ============================================================
 // PASSO 5 — implemente removeMedication(id)
