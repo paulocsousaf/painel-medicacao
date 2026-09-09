@@ -35,7 +35,7 @@ function toMedicationJson(row: medicationRow){
    patientName: row.patient_name,
    medicationName: row.medication_name,
    dosage: row.dosage,
-   route: row.dosage,
+   route: row.route,
    scheduledAt: row.scheduled_at,
    notes: row.notes
   }
