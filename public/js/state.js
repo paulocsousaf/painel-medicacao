@@ -12,7 +12,8 @@ const state = {
   isLoading: true,
   errorMessage: null,
 
-  selectedId: null,
+  isSelected: false,
+  selectedMedicationData: null,
   isLoadingDetail: false,
   detailErrorMessage: null,
 };
@@ -30,15 +31,8 @@ function notify() {
 
 export function getState() {
   return {
-    ...state,
-    selectedMedication: getSelectedMedication(),
+    ...state
   };
-}
-
-/** Derivado: o registro aberto no painel de detalhe (nunca guardado duas vezes). */
-export function getSelectedMedication() {
-  if (state.selectedId === null) return null;
-  return state.medications.find((m) => m.id === state.selectedId) ?? null;
 }
 
 // ============================================================
@@ -73,10 +67,26 @@ export function addMedication(medication){
 //   selectMedication: guarda o id, zera erro de detalhe, notify()
 //   clearSelection: volta selectedId para null, notify()
 // ============================================================
-
-export function selectMedication(id){
-  state.selectedId = id
+// abre o detalhe e limpa o anterior
+export function selectMedication(){
+  state.isSelected = true;
+  state.selectedMedicationData = null
   state.isLoadingDetail = true
+  state.detailErrorMessage = null
+  notify()
+}
+export function setDetailMedication(medication){
+  state.selectedMedicationData = medication;
+  state.isLoadingDetail = false;
+  state.detailErrorMessage = null;
+  notify()
+}
+
+export function clearSelection(){
+  state.isSelected = false;
+  state.selectedMedicationData = null;
+  state.isLoadingDetail = false;
+  state.detailErrorMessage = null;
   notify()
 }
 

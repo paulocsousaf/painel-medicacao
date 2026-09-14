@@ -5,9 +5,9 @@
  * evento -> ação -> estado -> render -> tela. Sempre nesse sentido.
  * ============================================================
  */
-import {listMedications, createMedication} from "./api.js";
-import { subscribe, getState, setMedications, setError, addMedication} from "./state.js";
-import { renderCounter, renderLoading, renderError, renderMedicationList} from "./render.js";
+import {listMedications, createMedication, getMedication} from "./api.js";
+import { subscribe, getState, setMedications, setError, addMedication, selectMedication, clearSelection, setDetailMedication} from "./state.js";
+import { renderCounter, renderLoading, renderError, renderMedicationList, renderDetail} from "./render.js";
 
 const medicationListElement = document.querySelector("#medication-list");
 const resultCounterElement = document.querySelector("#result-counter");
@@ -36,6 +36,7 @@ function renderApp(state) {
   }
 
   // PASSO 4: chame renderDeta il(state, detailPanelElement) aqui
+  renderDetail(state, detailPanelElement)
   renderMedicationList(state.medications, medicationListElement)
   renderCounter(state.medications.length, resultCounterElement);
 }
@@ -113,7 +114,31 @@ function setFeedback(mensage, label){
 //   event.target.closest('[data-medication-id]') -> selectMedication(id)
 //   -> buscar o detalhe com getMedication(id) -> tratar 404
 // ============================================================
+medicationListElement.addEventListener("click", async (event)=>{
+  try{
+    const cardId = event.target.closest('.medication-card').dataset.medicationId
+    await openDetail(Number(cardId))
+  }catch{}
+})
 
+async function openDetail(id){
+ selectMedication()
+  try{
+    const response = await getMedication(id)
+    setDetailMedication(response)
+   
+  }catch(error){
+    setError(error.message)
+    console.error(error.message)
+  }
+
+}
+
+detailPanelElement.addEventListener("click", (event)=>{
+  if(event.target.closest("#close-detail-button")){
+    clearSelection()
+  }
+})
 
 // ============================================================
 // PASSO 5 — clique em "Suspender" dentro do painel de detalhe

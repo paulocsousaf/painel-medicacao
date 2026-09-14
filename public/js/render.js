@@ -74,3 +74,47 @@ export function renderError(message, container) {
 //   observações (se houver) e um botão <button id="remove-button">Suspender</button>
 //   dica: veja o padrão renderDetail do Mini-Prontuário (gabarito da Atividade 01)
 // ============================================================
+
+export function renderDetail(state, container){
+  
+  if(!state.isSelected){
+    container.hidden = true
+    container.innerHTML = ""
+    return 
+  }
+
+  const medication = state.selectedMedicationData
+
+  container.hidden = false
+  const body = state.isLoadingDetail ? `<div class="empty-state"><p class="m-0">Carregando Prontuário</p></div>`
+                : `<h2 class="detail-panel__title">${escapeHtml(medication.patientName)}</h2>
+    
+                    <table class="table table-bordered mt-3"">
+                      <tr>
+                        <th>Medicamento</th>
+                        <th>Dose</th>
+                        <th>Via</th>
+                        <th>Data</th>
+                        
+                      </tr>
+
+                      <tr>
+                        <td>${escapeHtml(medication.medicationName)}</td>
+                        <td>${escapeHtml(medication.dosage)}</td>
+                        <td>${escapeHtml(medication.route)}</td>
+                        <td>${formatDateTime(medication.scheduledAt)}</td>
+                      </tr>
+                    </table>
+                    <p class="detail-notes">${escapeHtml(medication.notes ?? "Sem observação")}</p>
+                    
+                  `
+  container.innerHTML = `
+      <div class="detail-panel__header">
+   
+       ${body}
+      <button id="close-detail-button" class="btn btn-outline-secondary btn-sm" type="button">
+        Fechar
+      </button>
+    </div>`
+
+}
