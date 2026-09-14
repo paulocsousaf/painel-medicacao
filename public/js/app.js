@@ -87,7 +87,7 @@ saveButton.addEventListener("click", async () =>{
 
   try{
     const created = await createMedication(medication)
-    addMedication(medication) // atualiza o estado da aplicação em state:
+    addMedication(created) // atualiza o estado da aplicação em state:
     setFeedback(`Prescrição cadastrada: #${created.id}`, "success")
     // limpa campos do formulário
     patientNameInput.value = "";  
