@@ -102,10 +102,11 @@ saveButton.addEventListener("click", async () =>{
   // habilita o botão novamente
   saveButton.disabled = false
 })
-  function setFeedback(mensage, label){
-    formFeedbackElement.textContent = mensage
-    formFeedbackElement.className = `med-form__feedback--${label}`
-  }
+
+function setFeedback(mensage, label){
+  formFeedbackElement.textContent = mensage
+  formFeedbackElement.className = `med-form__feedback--${label}`
+}
 
 // ============================================================
 // PASSO 4 — clique num cartão da lista (delegação de evento no <ul>)
