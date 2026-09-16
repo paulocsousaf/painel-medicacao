@@ -49,7 +49,7 @@ function emptyStateTemplate() {
 
 export function renderMedicationList(medication, container){
   if(medication.length === 0){
-    return emptyStateTemplate()
+    return container.innerHTML = emptyStateTemplate()
   }
   return container.innerHTML = medication.map(medicationCardTemplate).join('')
 }
@@ -108,10 +108,17 @@ export function renderDetail(state, container){
                     <p class="detail-notes">${escapeHtml(medication.notes ?? "Sem observação")}</p>
                     
                   `
+  if(state.isLoadingDetail === false){
+    container.dataset.medicationId = medication.id
+  }
   container.innerHTML = `
       <div class="detail-panel__header">
    
        ${body}
+     <button id="remove-button" class="btn btn-outline-danger btn-sm" type="button">
+        Suspender
+      </button>
+
       <button id="close-detail-button" class="btn btn-outline-secondary btn-sm" type="button">
         Fechar
       </button>

@@ -47,8 +47,6 @@ export async function createMedication(medication){
     return await response.json()
   }
   
-
-
 // ============================================================
 // PASSO 4 — implemente getMedication(id)
 //   fetch(`${MEDICATIONS_URL}/${id}`)
@@ -65,9 +63,19 @@ export async function getMedication(id){
     return await response.json()
 
 }
-
 // ============================================================
 // PASSO 5 — implemente removeMedication(id)
 //   method: "DELETE"
 //   sucesso = response.status === 204 (sem corpo, não dá pra fazer .json())
 // ============================================================
+
+export async function removeMedication(id){
+  const response = await fetch(`/api/medications/${id}`, {
+    method: 'DELETE'
+  })
+
+  if(!response.ok){
+    throw new Error(response.json())
+  }
+
+}
