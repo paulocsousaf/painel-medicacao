@@ -6,7 +6,7 @@
  * estatico. As quatro rotas da atividade (listar, criar, obter
  * um, remover) ainda nao existem — sao o que voce vai construir.
  */
-import express from "express";
+import express, { response } from "express";
 import { db } from "./database";
 
 const app = express();
@@ -126,6 +126,18 @@ try{
 //   db.prepare("DELETE FROM medication_orders WHERE id = ?").run(id)
 //   responda 204, sem corpo
 // ============================================================
+app.delete('/api/medications/:id', (req, res) =>{
+  const id = req.params.id
+  const existing = db.prepare(`SELECT id FROM medication_orders WHERE id = ?`).get(id)
+
+  if(!existing){
+    res.status(404).json(`Prescrição não encontrada!`)
+    return
+  }
+
+  db.prepare(`DELETE FROM medication_orders WHERE id = ?`).run(id)
+  res.status(204).send()
+})
 
 app.listen(PORT, () => {
   console.log(`Painel de Medicacao no ar em http://localhost:${PORT}`);

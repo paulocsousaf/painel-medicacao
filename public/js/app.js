@@ -5,8 +5,8 @@
  * evento -> ação -> estado -> render -> tela. Sempre nesse sentido.
  * ============================================================
  */
-import {listMedications, createMedication, getMedication} from "./api.js";
-import { subscribe, getState, setMedications, setError, addMedication, selectMedication, clearSelection, setDetailMedication} from "./state.js";
+import {listMedications, createMedication, getMedication, removeMedication} from "./api.js";
+import { subscribe, getState, setMedications, setError, addMedication, selectMedication, clearSelection, setDetailMedication, removeMedicationFromState} from "./state.js";
 import { renderCounter, renderLoading, renderError, renderMedicationList, renderDetail} from "./render.js";
 
 const medicationListElement = document.querySelector("#medication-list");
@@ -145,3 +145,12 @@ detailPanelElement.addEventListener("click", (event)=>{
 //   (delegação de evento no #detail-panel, já que ele é redesenhado)
 //   removeMedication(id) -> removeMedicationFromState(id)
 // ============================================================
+
+detailPanelElement.addEventListener("click", async (event) =>{
+  if(event.target.id === 'remove-button'){
+    // confirmar suspensão
+    if(confirm("Tem certeza que deseja suspender esta medicação?"))
+      await removeMedication(detailPanelElement.dataset.medicationId)
+      removeMedicationFromState(detailPanelElement.dataset.medicationId)
+  }
+})
