@@ -1,12 +1,3 @@
-/**
- * ============================================================
- * RENDERIZAÇÃO
- * ------------------------------------------------------------
- * Desenha o estado na tela. Não decide nada. Mesmo padrão do
- * Mini-Prontuário.
- * ============================================================
- */
-
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -42,11 +33,6 @@ function emptyStateTemplate() {
   `;
 }
 
-// ============================================================
-// PASSO 2 — implemente renderMedicationList(medications, container)
-//   vazio -> emptyStateTemplate(); senão -> map + join('') com medicationCardTemplate
-// ============================================================
-
 export function renderMedicationList(medication, container){
   if(medication.length === 0){
     return container.innerHTML = emptyStateTemplate()
@@ -66,14 +52,6 @@ export function renderLoading(container) {
 export function renderError(message, container) {
   container.innerHTML = `<li><div class="empty-state"><p class="empty-state__title">Algo deu errado</p><p class="m-0">${escapeHtml(message)}</p></div></li>`;
 }
-
-// ============================================================
-// PASSO 4 — implemente renderDetail(state, container)
-//   sem selectedMedication -> container.hidden = true; container.innerHTML = ""
-//   com selectedMedication -> desenhe nome, paciente, dosagem, via, horário,
-//   observações (se houver) e um botão <button id="remove-button">Suspender</button>
-//   dica: veja o padrão renderDetail do Mini-Prontuário (gabarito da Atividade 01)
-// ============================================================
 
 export function renderDetail(state, container){
   

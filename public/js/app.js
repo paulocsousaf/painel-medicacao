@@ -2,7 +2,7 @@
  * ============================================================
  * ORQUESTRAÇÃO
  * ------------------------------------------------------------
- * evento -> ação -> estado -> render -> tela. Sempre nesse sentido.
+ * evento -> ação -> estado -> render -> tela.
  * ============================================================
  */
 import {listMedications, createMedication, getMedication, removeMedication} from "./api.js";
@@ -43,36 +43,6 @@ function renderApp(state) {
 
 subscribe(renderApp);
 
-// ============================================================
-// PASSO 2 — carga inicial
-//   async function start() {
-//     renderApp(getState());
-//     try {
-//       const medications = await listMedications();
-//       setMedications(medications);
-//     } catch (error) {
-//       setError(error.message);
-//     }
-//   }
-//   start();
-// ============================================================
-async function start() {
-  renderApp(getState())
-  try{
-    const medications = await listMedications()
-    setMedications(medications)
-  }catch(error){
-    setError(error.message)
-  }
-}
-start()
-
-// ============================================================
-// PASSO 3 — clique em "Cadastrar prescrição"
-//   ler os inputs, chamar createMedication(), addMedication(),
-//   limpar o formulário, mostrar feedback de sucesso/erro
-// ============================================================
-
 saveButton.addEventListener("click", async () =>{
   // disabilita o botão temporariamente
   saveButton.disabled = true
@@ -109,11 +79,6 @@ function setFeedback(mensage, label){
   formFeedbackElement.className = `med-form__feedback--${label}`
 }
 
-// ============================================================
-// PASSO 4 — clique num cartão da lista (delegação de evento no <ul>)
-//   event.target.closest('[data-medication-id]') -> selectMedication(id)
-//   -> buscar o detalhe com getMedication(id) -> tratar 404
-// ============================================================
 medicationListElement.addEventListener("click", async (event)=>{
   try{
     const cardId = event.target.closest('.medication-card').dataset.medicationId
@@ -140,12 +105,6 @@ detailPanelElement.addEventListener("click", (event)=>{
   }
 })
 
-// ============================================================
-// PASSO 5 — clique em "Suspender" dentro do painel de detalhe
-//   (delegação de evento no #detail-panel, já que ele é redesenhado)
-//   removeMedication(id) -> removeMedicationFromState(id)
-// ============================================================
-
 detailPanelElement.addEventListener("click", async (event) =>{
   if(event.target.id === 'remove-button'){
     // confirmar suspensão
@@ -154,3 +113,14 @@ detailPanelElement.addEventListener("click", async (event) =>{
       removeMedicationFromState(detailPanelElement.dataset.medicationId)
   }
 })
+
+async function start() {
+  renderApp(getState())
+  try{
+    const medications = await listMedications()
+    setMedications(medications)
+  }catch(error){
+    setError(error.message)
+  }
+}
+start()

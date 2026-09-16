@@ -1,12 +1,3 @@
-/**
- * ============================================================
- * ESTADO
- * ------------------------------------------------------------
- * Guarda a resposta para "o que a tela precisa mostrar agora?".
- * Não conhece o DOM. Mesmo padrão do Mini-Prontuário.
- * ============================================================
- */
-
 const state = {
   medications: [],
   isLoading: true,
@@ -35,10 +26,6 @@ export function getState() {
   };
 }
 
-// ============================================================
-// PASSO 2 — implemente setMedications(medications)
-//   guarde a lista, encerre o loading, limpe o erro, notify()
-// ============================================================
 export function setMedications(medications){
   state.medications = medications;
   state.isLoading = false;
@@ -52,21 +39,11 @@ export function setError(message) {
   notify();
 }
 
-// ============================================================
-// PASSO 3 — implemente addMedication(medication)
-//   acrescenta ao array de medications (imutável: [...state.medications, medication])
-//   notify()
-// ============================================================
 export function addMedication(medication){
   state.medications.push(medication)
   notify()
 }
 
-// ============================================================
-// PASSO 4 — implemente selectMedication(id) e clearSelection()
-//   selectMedication: guarda o id, zera erro de detalhe, notify()
-//   clearSelection: volta selectedId para null, notify()
-// ============================================================
 // abre o detalhe e limpa o anterior
 export function selectMedication(){
   state.isSelected = true;
@@ -96,11 +73,6 @@ export function setDetailError(message) {
   state.isLoadingDetail = false;
   notify();
 }
-
-// ============================================================
-// PASSO 5 — implemente removeMedicationFromState(id)
-//   filtra o array tirando o id removido, limpa a seleção, notify()
-// ============================================================
 
 export function removeMedicationFromState(id){
   state.medications = state.medications.filter((med) => med.id != id)

@@ -6,7 +6,7 @@
  * estatico. As quatro rotas da atividade (listar, criar, obter
  * um, remover) ainda nao existem — sao o que voce vai construir.
  */
-import express, { response } from "express";
+import express from "express";
 import { db } from "./database";
 
 const app = express();
@@ -41,20 +41,6 @@ function toMedicationJson(row: medicationRow){
   }
 }
 
-// ============================================================
-// PASSO 1 — GET /api/medications
-//   db.prepare("SELECT ... FROM medication_orders").all()
-//   Nao esqueca de traduzir snake_case -> camelCase antes de responder.
-// ============================================================
-app.get('/api/medications', (req, res) => {
-  const rows = db.prepare('SELECT * FROM medication_orders').all() as medicationRow[]
-  res.send(rows.map(toMedicationJson))
-})
-// ============================================================
-// PASSO 3 — POST /api/medications
-//   valide patientName, medicationName, dosage, route, scheduledAt
-//   INSERT parametrizado -> responda 201 com o registro criado
-// ============================================================
 const ISO_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
 function isBlank(value: string): boolean{
@@ -80,6 +66,14 @@ function validateInput(body: any){
   }
   return null
 }
+
+// Rotas
+
+app.get('/api/medications', (req, res) => {
+  const rows = db.prepare('SELECT * FROM medication_orders').all() as medicationRow[]
+  res.send(rows.map(toMedicationJson))
+})
+
 app.post('/api/medications/', (req, res) =>{
   const medication = req.body
   const problem = validateInput(medication)
@@ -100,11 +94,7 @@ app.post('/api/medications/', (req, res) =>{
   // devolver a resposta com o medicamento criado
   res.status(201).json(toMedicationJson(created as medicationRow))
 })
-// ============================================================
-// PASSO 4 — GET /api/medications/:id
-//   db.prepare("SELECT ... WHERE id = ?").get(id)
-//   undefined -> 404
-// ============================================================
+
 app.get('/api/medications/:id', (req, res) =>{
 
 try{
@@ -121,11 +111,7 @@ try{
   return res.status(500).json({error: "Error interno do Servidor"})
 }
 })
-// ============================================================
-// PASSO 5 — DELETE /api/medications/:id
-//   db.prepare("DELETE FROM medication_orders WHERE id = ?").run(id)
-//   responda 204, sem corpo
-// ============================================================
+
 app.delete('/api/medications/:id', (req, res) =>{
   const id = req.params.id
   const existing = db.prepare(`SELECT id FROM medication_orders WHERE id = ?`).get(id)
