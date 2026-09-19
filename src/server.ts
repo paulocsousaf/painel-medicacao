@@ -44,7 +44,7 @@ function toMedicationJson(row: medicationRow){
 const ISO_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
 function isBlank(value: string): boolean{
-  return value.trim() === ""
+  return typeof value !== "string" || value.trim() === "";
 }
 
 function validateInput(body: any){
